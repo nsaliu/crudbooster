@@ -20,7 +20,7 @@
 			<div class='row'>
 				<div class='col-sm-10'>
 					<div class="panel panel-default">
-						<div class="panel-heading"><i class="fa fa-pencil-square-o"></i> Form</div>
+						<div class="panel-heading"><i class="fa fa-pencil-square-o"></i> {{ trans('crudbooster.form_text') }}</div>
 						<div class="panel-body child-form-area">
 							@foreach($form['columns'] as $col)	
 							<?php $name_column = $name.$col['name'];?>
