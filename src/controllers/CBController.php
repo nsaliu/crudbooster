@@ -2,6 +2,7 @@
 
 error_reporting(E_ALL ^ E_NOTICE);
 
+use Carbon\Carbon;
 use crocodicstudio\crudbooster\controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -1093,8 +1094,18 @@ class CBController extends Controller {
 					$column_data = [];
 					$column_data[$fk] = $id;
 					foreach($columns as $col) {
-						$colname = $col['name'];
-						$column_data[$colname] = Request::get($name.'-'.$colname)[$i];
+
+                        $colname = $col['name'];
+
+                        if ($col['type'] == 'date')
+                        {
+                            $dateValue = Carbon::parse(Request::get($name.'-'.$colname)[$i])->format('Y-m-d');
+                            $column_data[$colname] = $dateValue;
+                        }
+                        else
+                        {
+                            $column_data[$colname] = Request::get($name.'-'.$colname)[$i];
+                        }
 					}
 					$child_array[] = $column_data;
 				}	
@@ -1244,7 +1255,16 @@ class CBController extends Controller {
 					$column_data[$fk] = $id;
 					foreach($columns as $col) {
 						$colname = $col['name'];
-						$column_data[$colname] = Request::get($name.'-'.$colname)[$i];
+
+                        if ($col['type'] == 'date')
+                        {
+                            $dateValue = Carbon::parse(Request::get($name.'-'.$colname)[$i])->format('Y-m-d');
+                            $column_data[$colname] = $dateValue;
+                        }
+                        else
+                        {
+                            $column_data[$colname] = Request::get($name.'-'.$colname)[$i];
+                        }
 					}
 					$child_array[] = $column_data;
 
