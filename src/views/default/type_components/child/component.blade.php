@@ -35,6 +35,15 @@
 									<input id='{{$name_column}}' type='text' {{ ($col['max'])?"maxlength='$col[max]'":"" }} name='{{$col["name"]}}' class='form-control {{$col['required']?"required":""}}' 										
 										{{($col['readonly']===true)?"readonly":""}} 
 										/>
+									@elseif($col['type']=='date')
+										<div class='form-group form-datepicker {{$header_group_class}} {{ ($errors->first($col["name"]))?"has-error":"" }}' id='form-group-{{$name_column}}' style="{{@$form['style']}}">
+											<div class="col-sm-12">
+												<div class="input-group">
+													<span class="input-group-addon open-datetimepicker"><a><i class='fa fa-calendar '></i></a></span>
+													<input type='text' title="{{$col['label']}}" readonly {{$col['required']?"required":""}} {{($col['readonly']===true)?"readonly":""}} {!!$col['placeholder']!!} {{$col['disabled']}} class='form-control notfocus input_date' name="{{$name_column}}" id="{{$name_column}}" value='{{$value}}'/>
+												</div>
+											</div>
+										</div>
 									@elseif($col['type']=='radio')
 										<?php 
 											if($col['dataenum']):
@@ -432,7 +441,7 @@
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<i class='fa fa-table'></i> Table Detail
+					<i class='fa fa-table'></i> {{trans('crudbooster.table_details')}}
 				</div>
 				<div class="panel-body no-padding table-responsive"  style="max-height: 400px;overflow: auto;">
 					<table id='table-{{$name}}' class='table table-striped table-bordered'>
