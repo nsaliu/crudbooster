@@ -40,7 +40,7 @@
 											<div class="col-sm-12">
 												<div class="input-group">
 													<span class="input-group-addon open-datetimepicker"><a><i class='fa fa-calendar '></i></a></span>
-													<input type='text' title="{{$col['label']}}" readonly {{$col['required']?"required":""}} {{($col['readonly']===true)?"readonly":""}} {!!$col['placeholder']!!} {{$col['disabled']}} class='form-control notfocus input_date' name="{{$name_column}}" id="{{$name_column}}" value='{{$value}}'/>
+													<input type='text' title="{{$col['label']}}" readonly {{($col['readonly']===true)?"readonly":""}} {!!$col['placeholder']!!} {{$col['disabled']}} class='form-control notfocus input_date {{$col['required']?"required":""}}' name="{{$name_column}}" id="{{$name_column}}" value='{{$value}}'/>
 												</div>
 											</div>
 										</div>
