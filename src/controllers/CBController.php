@@ -1258,7 +1258,8 @@ class CBController extends Controller {
 
                         if ($col['type'] == 'date')
                         {
-                            $dateValue = Carbon::parse(Request::get($name.'-'.$colname)[$i])->format('Y-m-d');
+                            $dateValue = Request::get($name.'-'.$colname)[$i];
+                            $dateValue = ($dateValue == null || $dateValue == '') ? null : Carbon::parse(Request::get($name.'-'.$colname)[$i])->format('Y-m-d');
                             $column_data[$colname] = $dateValue;
                         }
                         else

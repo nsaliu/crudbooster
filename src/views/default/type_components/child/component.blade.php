@@ -64,7 +64,8 @@
 												}
 										?>
 										<label class="radio-inline">
-										  <input type="radio" name="{{$col['name']}}" class='{{ ($e==0 && $col['required'])?"required":""}} {{$name_column}}'  value="{{$radio_value}}"> {{$radio_label}} 
+										  {{--<input type="radio" name="{{$col['name']}}" class='{{ ($e==0 && $col['required'])?"required":""}} {{$name_column}}'  value="{{$radio_value}}"> {{$radio_label}} --}}
+										  <input {{ ($e==0) ? "" : "checked" }} type="radio" name="{{$col['name']}}" {{$col['required']?"required":""}} class='{{$col['required']?"required":""}} {{$name_column}}'  value="{{$radio_value}}"> {{$radio_label}}
 										</label>
 										<?php endforeach;?>
 										<?php endif;?>
@@ -365,7 +366,7 @@
 									$('#panel-form-{{$name}} .required').each(function() {
 										var v = $(this).val();																	
 										if(v == '') {											
-											sweetAlert("Oops","Please complete the form !","warning");
+											sweetAlert("{{ trans('crudbooster.warning') }}", "{{ trans('crudbooster.compile_mandatory_fields') }}","warning");
 											is_false += 1;
 										}
 									})
@@ -426,14 +427,14 @@
 										currentRow.replaceWith(trRow);
 										currentRow = null;
 									}
-									$('#btn-add-table-{{$name}}').val('Add To Table');
+									$('#btn-add-table-{{$name}}').val('{{ trans('crudbooster.action_add_to_table') }}');
 									$('#btn-reset-form-{{$name}}').click();									
 								}
 							</script>
 						</div>
 						<div class="panel-footer" align="right">
-							<input type='button' class='btn btn-default' id="btn-reset-form-{{$name}}" onclick="resetForm{{$name}}()" value='Reset Form'/>
-							<input type='button' id='btn-add-table-{{$name}}' class='btn btn-primary' onclick="addToTable{{$name}}()" value='Add To Table'/>
+							<input type='button' class='btn btn-default' id="btn-reset-form-{{$name}}" onclick="resetForm{{$name}}()" value='{{ trans('crudbooster.reset_form') }}'/>
+							<input type='button' id='btn-add-table-{{$name}}' class='btn btn-primary' onclick="addToTable{{$name}}()" value='{{ trans('crudbooster.action_add_to_table') }}'/>
 						</div>
 					</div>
 				</div>
@@ -516,7 +517,17 @@
 											echo "<a data-label='$filename' href='".asset( $d->{$col['name']} )."'>$filename</a>";
 											echo "<input type='hidden' name='".$name."-".$col['name']."[]' value='".$d->{ $col['name'] }."'/>";
 										}									
-									}else{
+									}
+									elseif ($col['type']=='date')
+									{
+										echo ($d->{$col['name']} != null && $d->{$col['name']} != '') ? \Carbon\Carbon::parse($d->{$col['name']})->format('d-m-Y') : null;
+										echo "<input type='hidden' name='".$name."-".$col['name']."[]' value='".$d->{$col['name']}."'/>";
+									}
+									elseif ($col['type']=='radio')
+									{
+										echo $d->{$col['name']};
+									}
+									else{
 										echo "<span class='td-label'>";
 										echo $d->{$col['name']};
 										echo "</span>";
