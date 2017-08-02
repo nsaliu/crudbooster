@@ -249,15 +249,16 @@
 								    </script>
 
 									@elseif($col['type']=='select')
-									<select id='{{$name_column}}' name='{{$col["name"]}}' class='form-control select2 {{$col['required']?"required":""}}' 										
-										{{($col['readonly']===true)?"readonly":""}} 
+									<select id='{{$name_column}}' name='{{$col["name"]}}' class='form-control select2 {{$col['required']?"required":""}}'
+										{{($col['readonly']===true)?"readonly":""}}
 										>
 										<option value=''>{{trans('crudbooster.text_prefix_option')}} {{$col['label']}}</option>
-										<?php 
+										<?php
 											if($col['datatable']) {
 												$tableJoin = explode(',',$col['datatable'])[0];
 												$titleField = explode(',',$col['datatable'])[1];
-												$data = CRUDBooster::get($tableJoin,NULL,"$titleField ASC");
+												$conditions = $col['datatable_where'];
+												$data = CRUDBooster::get($tableJoin,$conditions,"$titleField ASC");
 												foreach($data as $d) {
 													echo "<option value='$d->id'>".$d->$titleField."</option>";
 												}
@@ -273,8 +274,8 @@
 													}
 													echo "<option value='$opt_value'>$opt_label</option>";
 												}
-											}											
-										?>										
+											}
+										?>
 									</select>
 									@elseif($col['type']=='hidden')
 										<input type="{{$col['type']}}" id="{{$name.$col["name"]}}" name="{{$name.$col["name"]}}" value="{{$col["value"]}}">
