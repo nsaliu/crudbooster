@@ -257,9 +257,15 @@
 											if($col['datatable']) {
 												$tableJoin = explode(',',$col['datatable'])[0];
 												$titleField = explode(',',$col['datatable'])[1];
+												$subTitleField = explode(',',$col['datatable'])[2];
 												$conditions = $col['datatable_where'];
 												$data = CRUDBooster::get($tableJoin,$conditions,"$titleField ASC");
-												foreach($data as $d) {
+												foreach($data as $d)
+												{
+													$toDisplay = $d->$titleField;
+													if ($subTitleField != null)
+														$toDisplay = $d->$titleField.' - '.$d->$subTitleField;
+
 													echo "<option value='$d->id'>".$d->$titleField."</option>";
 												}
 											}else{
