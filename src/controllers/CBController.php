@@ -967,6 +967,7 @@ class CBController extends Controller {
 					//Move file to storage								
 					$file_path = storage_path('app'.DIRECTORY_SEPARATOR.date('Y-m'));
 
+                    /*
 					if($ro['upload_encrypt']==true) {
 						$filename = md5(str_random(5)).'.'.$ext;
 					}else{
@@ -977,6 +978,9 @@ class CBController extends Controller {
 							$filename = $filename.'.'.$ext;
 						}
 					}
+					*/
+
+                    $filename = $filename.'_'.md5(str_random(5)).'.'.$ext;
 										
 					if($file->move($file_path,$filename)) {
 						$this->arr[$name] = 'uploads/'.date('Y-m').'/'.$filename;
