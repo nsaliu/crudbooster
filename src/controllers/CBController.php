@@ -1087,7 +1087,7 @@ class CBController extends Controller {
 				}
 			}
 
-			if($ro['type']=='child') {
+            if($ro['type']=='child'  || $ro['type']=='child_description_select') {
 				$name = str_slug($ro['label'],'');
 				$columns = $ro['columns'];				
 				$count_input_data = count(Request::get($name.'-'.$columns[0]['name']))-1;
@@ -1240,7 +1240,7 @@ class CBController extends Controller {
 				}
 			}
 
-			if($ro['type']=='child') {
+            if($ro['type']=='child'  || $ro['type']=='child_description_select') {
 				$name = str_slug($ro['label'],'');
 				$columns = $ro['columns'];				
 				$count_input_data = count(Request::get($name.'-'.$columns[0]['name']))-1;
