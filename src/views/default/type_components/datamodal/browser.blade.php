@@ -21,9 +21,10 @@
 </thead>
 <tbody>
 	@foreach($result as $row)
-	<tr>	
+	<tr>
 		@foreach($columns as $col)
-		<?php 
+		<?php
+//				print_r($columns);
 			$img_extension = ['jpg','jpeg','png','gif','bmp'];
 			$ext = pathinfo($row->$col, PATHINFO_EXTENSION);
 			if($ext && in_array($ext, $img_extension)) {
@@ -36,7 +37,16 @@
 		<?php 
 			$select_data_result = [];
 			$select_data_result['datamodal_id'] = $row->id;
-			$select_data_result['datamodal_label'] = $row->{$columns[1]}?:$row->id;
+
+			$dataModalLabel = '';
+			for ($i = 1; $i <= count($columns); $i++)
+			{
+				 $dataModalLabel .= $row->{$columns[$i]}.' ';
+			}
+
+			$select_data_result['datamodal_label'] = $dataModalLabel;
+//			$select_data_result['datamodal_label'] = $row->{$columns[1]}?:$row->id;
+
 			$select_data = Request::get('select_to');
 			if($select_data) {				
 				$select_data = explode(',',$select_data);

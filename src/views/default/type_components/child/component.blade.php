@@ -471,10 +471,20 @@
 								$data_child->addselect($form['table'].'.'.$c['name']);
 
 								if($c['type'] == 'datamodal') {
-									$datamodal_title = explode(',',$c['datamodal_columns'])[0];
+
+									$datamodal_fields = explode(',',$c['datamodal_columns']);
 									$datamodal_table = $c['datamodal_table'];
 									$data_child->join($c['datamodal_table'],$c['datamodal_table'].'.id','=',$c['name']);
-									$data_child->addselect($c['datamodal_table'].'.'.$datamodal_title.' as '.$datamodal_table.'_'.$datamodal_title);
+									foreach ($datamodal_fields as $datamodal_field)
+									{
+										$data_child->addselect($c['datamodal_table'].'.'.$datamodal_field.' as '.$datamodal_table.'_'.$datamodal_field);
+									}
+
+
+//									$datamodal_title = explode(',',$c['datamodal_columns'])[0];
+//									$datamodal_table = $c['datamodal_table'];
+//									$data_child->join($c['datamodal_table'],$c['datamodal_table'].'.id','=',$c['name']);
+//									$data_child->addselect($c['datamodal_table'].'.'.$datamodal_title.' as '.$datamodal_table.'_'.$datamodal_title);
 								}elseif ($c['type'] == 'select') {
 									if($c['datatable']) {
 										$join_table = explode(',',$c['datatable'])[0];
@@ -509,12 +519,28 @@
 											echo "<input type='hidden' name='".$name."-".$col['name']."[]' value='".$d->{$col['name']}."'/>";
 										}
 									}elseif ($col['type']=='datamodal') {
-										$datamodal_title = explode(',',$col['datamodal_columns'])[0];
+
+										$datamodal_fields = explode(',',$col['datamodal_columns']);
 										$datamodal_table = $col['datamodal_table'];
 										echo "<span class='td-label'>";
-										echo $d->{$datamodal_table.'_'.$datamodal_title};
-										echo "</span>";
+
+										foreach ($datamodal_fields as $datamodal_field)
+										{
+											echo $d->{$datamodal_table.'_'.$datamodal_field}.' ';
+										}
+
 										echo "<input type='hidden' name='".$name."-".$col['name']."[]' value='".$d->{$col['name']}."'/>";
+										echo "</span>";
+
+
+
+
+//										$datamodal_title = explode(',',$col['datamodal_columns'])[0];
+//										$datamodal_table = $col['datamodal_table'];
+//										echo "<span class='td-label'>";
+//										echo $d->{$datamodal_table.'_'.$datamodal_title};
+//										echo "</span>";
+//										echo "<input type='hidden' name='".$name."-".$col['name']."[]' value='".$d->{$col['name']}."'/>";
 									}elseif ($col['type']=='upload') {
 										$filename = basename( $d->{$col['name']} );
 										if($col['upload_type']=='image') {
