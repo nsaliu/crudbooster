@@ -41,7 +41,8 @@
 			$dataModalLabel = '';
 			for ($i = 1; $i <= count($columns); $i++)
 			{
-				 $dataModalLabel .= $row->{$columns[$i]}.' ';
+				if (property_exists($row, $columns[$i]))
+				 	$dataModalLabel .= $row->{$columns[$i]}.' ';
 			}
 
 			$select_data_result['datamodal_label'] = $dataModalLabel;
