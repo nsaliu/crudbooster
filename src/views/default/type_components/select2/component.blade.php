@@ -161,19 +161,49 @@
 					@else
 						@if($form['datatable_ajax'] == false)
 							<option value=''>{{trans('crudbooster.text_prefix_option')}} {{$form['label']}}</option>
-							<?php 
+							<?php
+								$datatableArray = explode(',',$form['datatable']);
 								$select_table = explode(',',$form['datatable'])[0];
-								$select_title = explode(',',$form['datatable'])[1];
+									$main_field = explode(',',$form['datatable'])[1];
+								$select_title = '';
+								$select_titleArr = [];
+
+								if (count($datatableArray) > 2)
+								{
+									for ($i = 1; $i < count($datatableArray); $i++)
+									{
+										$select_titleArr[] = "'".$datatableArray[$i]."'";
+									}
+									$select_title_joined = join(',', $select_titleArr);
+
+								}
+								else
+								{
+									$select_title = explode(',',$form['datatable'])[1];
+									$select_title_joined = $select_title;
+								}
+
 								$select_where = $form['datatable_where'];
 								$select_table_pk = CRUDBooster::findPrimaryKey($select_table);
-								$result = DB::table($select_table)->select($select_table_pk,$select_title);
+								$result = DB::table($select_table)->select('*');
 								if($select_where) {
 									$result->whereraw($select_where);
 								}
-								$result = $result->orderby($select_title,'asc')->get();
+								$result = $result->orderby($main_field,'asc')->get();
 
 								foreach($result as $r) {
-									$option_label = $r->{$select_title};
+
+									$option_label = '';
+									if (count($datatableArray) > 0)
+									{
+										foreach ($datatableArray as $item)
+										{
+											$option_label .= $r->{$item}.' ';
+										}
+									}
+									else
+										$option_label = $r->{$select_title};
+
 									$option_value = $r->$select_table_pk;
 									$selected = ($option_value == $value)?"selected":"";
 									echo "<option $selected value='$option_value'>$option_label</option>";
