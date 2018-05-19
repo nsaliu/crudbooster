@@ -613,11 +613,13 @@ class CBController extends Controller {
 	}
 
 	public function getModalData() {
+
 		$table = Request::get('table');
 		$where = Request::get('where');
 		$where = urldecode($where);
-		$columns = Request::get('columns');
-		$columns = explode(",",$columns);
+        $orderby = Request::get('orderby') != null ? explode('|', Request::get('orderby')) : null;
+        $columns = Request::get('columns');
+        $columns = explode(",",$columns);
 
 		$table = CRUDBooster::parseSqlTable($table)['table'];
 		$tablePK = CB::pk($table);
@@ -639,7 +641,8 @@ class CBController extends Controller {
 			$result->whereraw($where);
 		}
 
-		$result->orderby($tablePK,'desc');
+//		$result->orderby($tablePK,'desc');
+		$result->orderby($orderby[0], $orderby[1]);
 
 		$data['result'] = $result->paginate(6);
 		$data['columns'] = $columns;
