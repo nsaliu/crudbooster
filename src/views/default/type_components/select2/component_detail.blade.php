@@ -3,8 +3,21 @@
 	if($datatable && !$form['relationship_table']) {	
 		$datatable = explode(',', $datatable);
 		$table = $datatable[0];
-		$field = $datatable[1];	
-		echo CRUDBooster::first($table,['id'=>$value])->$field;
+		$field = $datatable[1];
+
+		$separator = '';
+		$output = [];
+
+        $output[] = CRUDBooster::first($table,['id'=>$value])->$field;
+
+		if (!empty($datatable[2]))
+        {
+            $separator = ' - ';
+            $field1 = $datatable[2];
+            $output[] = CRUDBooster::first($table,['id'=>$value])->$field1;
+        }
+
+		echo join($separator, $output);
 	}
 
 	if($datatable && $form['relationship_table']) {
