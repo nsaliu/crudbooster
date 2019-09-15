@@ -163,7 +163,7 @@
 							<option value=''>{{trans('crudbooster.text_prefix_option')}} {{$form['label']}}</option>
 							<?php
 								$datatableArray = explode(',',$form['datatable']);
-								$datatableSeparator = $form['datatable_separator'];
+								$datatableSeparator = !empty($form['datatable_separator']) ? $form['datatable_separator'] : ' ';
 								$select_table = explode(',',$form['datatable'])[0];
 								$main_field = explode(',',$form['datatable'])[1];
 								$select_title = '';
@@ -175,7 +175,7 @@
 									{
 										$select_titleArr[] = "'".$datatableArray[$i]."'";
 									}
-									$select_title_joined = join(',', $select_titleArr);
+									$select_title_joined = join($datatableSeparator, $select_titleArr);
 
 								}
 								else
@@ -207,7 +207,7 @@
 										}
 
 										if (!empty($optLabelArray))
-											$option_label = join(' - ', $optLabelArray);
+											$option_label = join($datatableSeparator, $optLabelArray);
 									}
 									else
 										$option_label = $r->{$select_title};

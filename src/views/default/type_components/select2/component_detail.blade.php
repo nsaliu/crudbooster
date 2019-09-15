@@ -1,6 +1,8 @@
 <?php 
 	$datatable = $form['datatable'];
-	if($datatable && !$form['relationship_table']) {	
+	$datatableSeparator = !empty($form['datatable_separator']) ? $form['datatable_separator'] : ' ';
+	if($datatable && !$form['relationship_table']) {
+
 		$datatable = explode(',', $datatable);
 		$table = $datatable[0];
 		$field = $datatable[1];
@@ -12,7 +14,7 @@
 
 		if (!empty($datatable[2]))
         {
-            $separator = ' - ';
+            $separator = $datatableSeparator;
             $field1 = $datatable[2];
             $output[] = CRUDBooster::first($table,['id'=>$value])->$field1;
         }
