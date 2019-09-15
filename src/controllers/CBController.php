@@ -642,7 +642,9 @@ class CBController extends Controller {
 		}
 
 //		$result->orderby($tablePK,'desc');
-		$result->orderby($orderby[0], $orderby[1]);
+        if (!empty($orderby)) {
+            $result->orderby($orderby[0], $orderby[1]);
+        }
 
 		$data['result'] = $result->paginate(6);
 		$data['columns'] = $columns;
