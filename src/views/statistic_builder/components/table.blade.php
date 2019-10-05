@@ -34,16 +34,34 @@
 
   </form>
 @elseif($command=='showFunction')
-<?php 
-  if($key == 'sql') {    
+<?php
+  if($key == 'sql') {
   try{  
     $sessions = Session::all();
     foreach($sessions as $key=>$val) {
       $value = str_replace("[".$key."]", $val, $value);
     }
+
+    $user = DB::table('cms_users')->select('id_company')->where('id', Session::get('admin_id'))->first();
+    if ($user != null && !empty($user->id_company))
+    {
+      if (strpos($value, '#company_id#') !== false)
+      {
+        $value = str_replace('#company_id#', "and company_id = {$user->id_company}", $value);
+        $value = str_replace('#company_name#', null, $value);
+        $value = str_replace('#company_join#', null, $value);
+      }
+    }
+    else
+    {
+      $value = str_replace('#company_id#', null, $value);
+      $value = str_replace('#company_name#', 'c.name as Azienda,', $value);
+      $value = str_replace('#company_join#', 'join companies c on t.company_id = c.id', $value);
+    }
+
     $sql = DB::select(DB::raw($value));
   }catch(\Exception $e) {
-    die('ERROR');
+    die($e->getMessage());
   }
 ?>
 
